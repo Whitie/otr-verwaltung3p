@@ -77,9 +77,10 @@ install_deps () {
                         python3-libtorrent              \
                         python3-gi-cairo                \
                         python3-cairo                   \
-                        python3-crypto                  \
                         python3-requests                \
                         python3-pip                     \
+                        python3-dbus                    \
+                        python3-keyring                 \
                         gstreamer1.0-x                  \
                         gstreamer1.0-tools              \
                         gstreamer1.0-plugins-base       \

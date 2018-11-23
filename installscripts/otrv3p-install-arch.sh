@@ -76,9 +76,9 @@ install_deps () {
                         python-dbus \
                         python-simplejson \
                         python-cairo \
-                        python-crypto \
                         python-requests \
                         python-gitpython \
+                        python-keyring \
                         libtorrent-rasterbar \
                         gst-plugins-base \
                         gst-plugins-good \

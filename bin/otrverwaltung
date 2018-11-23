@@ -139,11 +139,7 @@ class App:
                 'folder_archive': '',
                 'otrkey_search': 'http://otrkeyfinder.com/?search=',
                 'save_email_password': False,
-                'aes_key': b64encode(os.urandom(32)).decode('utf-8'),
-                'aes_padding': '{',
-                'aes_blocksize': 32,    # 16 (AES-128), 24 (AES-192), or 32 (AES-256)
                 'email': '',
-                'password': '',
                 'no_password_hint': False,
                 'verify_decoded': True,
                 'cut_avis_by': 'SmartMKVmerge',

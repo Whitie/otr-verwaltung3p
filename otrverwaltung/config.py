@@ -21,9 +21,9 @@ except ImportError:
 import os.path
 import logging
 import base64
+import keyring
 
 from otrverwaltung import path
-from Crypto.Cipher import AES
 
 
 class Config:
@@ -56,12 +56,23 @@ class Config:
         except KeyError:
             pass
 
-        self.__fields[category][option] = value
+        if option is 'password':
+            keyring.set_password("otr-verwaltung", self.__fields['general']['email'], value)
+            self.log.debug("Writing password to keyring")
+        else:
+            self.__fields[category][option] = value
 
     def get(self, category, option):
         """ Gets a configuration option. """
-
-        value = self.__fields[category][option]
+        value = ""
+        
+        if option is 'password':
+            password = keyring.get_password("otr-verwaltung", self.__fields['general']['email'])
+            if password is not None:
+                value = password
+        else:
+            value = self.__fields[category][option]
+            
         if option in ['email', 'password']:
             self.log.debug("[%(category)s][%(option)s]: *****" % {"category": category, "option": option})
         else:
@@ -80,17 +91,6 @@ class Config:
                 pass
 
             config_file = open(self.__config_file, "w")
-            
-            try:
-                if len(str(self.__fields['general']['password'])) > 0:
-                    # Encryption
-                    pad = lambda s: s + (self.__fields['general']['aes_blocksize'] - len(s) % self.__fields['general']['aes_blocksize']) * self.__fields['general']['aes_padding']
-                    EncodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
-                    encryption_suite = AES.new(base64.b64decode(self.__fields['general']['aes_key'].encode('utf-8')))
-                    cipher_text = EncodeAES(encryption_suite, self.__fields['general']['password'])
-                    self.__fields['general']['password'] = base64.b64encode(cipher_text).decode('utf-8')
-            except ValueError:
-                self.__fields['general']['password']=self.__fields['general']['password']
             
             self.log.debug("Writing to {0}".format(config_file))
             json.dump(self.__fields, config_file, ensure_ascii=False, sort_keys=True, indent=4)

@@ -85,7 +85,6 @@ install_deps () {
                         python3-simplejson                   \
                         python3-cairo                        \
                         python3-requests                     \
-                        python3-pycrypto                     \
                         python3-pip                          \
                         python3-libtorrent-rasterbar         \
                         gstreamer-plugins-base               \
